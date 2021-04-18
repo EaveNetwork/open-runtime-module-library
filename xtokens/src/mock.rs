@@ -10,10 +10,10 @@ use polkadot_parachain::primitives::Sibling;
 use serde::{Deserialize, Serialize};
 use sp_io::TestExternalities;
 use sp_runtime::AccountId32;
-use xcm::v0::{Junction, MultiLocation::*, NetworkId};
+use xcm::v0::{Junction, MultiLocation::*, NetworkId, opaque::Xcm };
 use xcm_builder::{
 	AccountId32Aliases, LocationInverter, ParentIsDefault, RelayChainAsNative, SiblingParachainAsNative,
-	SiblingParachainConvertsVia, SignedAccountId32AsNative, SovereignSignedViaLocation,
+	SiblingParachainConvertsVia, SignedAccountId32AsNative, SovereignSignedViaLocation, FixedWeightBounds, FixedRateOfConcreteFungible
 };
 use xcm_executor::Config as XcmConfigT;
 use xcm_simulator::{decl_test_network, decl_test_parachain, prelude::*};
@@ -97,7 +97,7 @@ decl_test_parachain! {
 
 			parameter_types! {
 				pub ParaANetwork: NetworkId = NetworkId::Any;
-				pub RelayChainOrigin: Origin = cumulus_pallet_xcm_handler::Origin::Relay.into();
+				pub RelayChainOrigin: Origin = cumulus_pallet_xcm::Origin::Relay.into();
 				pub Ancestry: MultiLocation = MultiLocation::X1(Junction::Parachain {
 					id: ParachainInfo::get().into(),
 				});
@@ -123,19 +123,29 @@ decl_test_parachain! {
 			pub type LocalOriginConverter = (
 				SovereignSignedViaLocation<LocationConverter, Origin>,
 				RelayChainAsNative<RelayChainOrigin, Origin>,
-				SiblingParachainAsNative<cumulus_pallet_xcm_handler::Origin, Origin>,
+				SiblingParachainAsNative<cumulus_pallet_xcm::Origin, Origin>,
 				SignedAccountId32AsNative<ParaANetwork, Origin>,
 			);
+
+			parameter_types! {
+				pub UnitWeightCost: Weight = 1_000;
+				pub const WeightPrice: (MultiLocation, u128) = (MultiLocation::X1(Junction::Parent), 1_000);
+				pub AllowUnpaidFrom: Vec<MultiLocation> = vec![ MultiLocation::X1(Junction::Parent) ];
+			}
 
 			pub struct XcmConfig;
 			impl XcmConfigT for XcmConfig {
 				type Call = Call;
-				type XcmSender = XcmHandler;
+				type XcmSender = ();
 				type AssetTransactor = LocalAssetTransactor;
 				type OriginConverter = LocalOriginConverter;
-				type IsReserve = MultiNativeAsset;
+				type IsReserve = ();
 				type IsTeleporter = ();
 				type LocationInverter = LocationInverter<Ancestry>;
+				type Barrier = ();
+				type Weigher = FixedWeightBounds<UnitWeightCost, Call>;
+				type Trader = FixedRateOfConcreteFungible<WeightPrice>;
+				type ResponseHandler = ();
 			}
 		},
 		extra_config = {
@@ -202,7 +212,7 @@ decl_test_parachain! {
 
 			parameter_types! {
 				pub ParaANetwork: NetworkId = NetworkId::Any;
-				pub RelayChainOrigin: Origin = cumulus_pallet_xcm_handler::Origin::Relay.into();
+				pub RelayChainOrigin: Origin = cumulus_pallet_xcm::Origin::Relay.into();
 				pub Ancestry: MultiLocation = MultiLocation::X1(Junction::Parachain {
 					id: ParachainInfo::get().into(),
 				});
@@ -228,19 +238,29 @@ decl_test_parachain! {
 			pub type LocalOriginConverter = (
 				SovereignSignedViaLocation<LocationConverter, Origin>,
 				RelayChainAsNative<RelayChainOrigin, Origin>,
-				SiblingParachainAsNative<cumulus_pallet_xcm_handler::Origin, Origin>,
+				SiblingParachainAsNative<cumulus_pallet_xcm::Origin, Origin>,
 				SignedAccountId32AsNative<ParaANetwork, Origin>,
 			);
+
+			parameter_types! {
+				pub UnitWeightCost: Weight = 1_000;
+				pub const WeightPrice: (MultiLocation, u128) = (MultiLocation::X1(Junction::Parent), 1_000);
+				pub AllowUnpaidFrom: Vec<MultiLocation> = vec![ MultiLocation::X1(Junction::Parent) ];
+			}
 
 			pub struct XcmConfig;
 			impl XcmConfigT for XcmConfig {
 				type Call = Call;
-				type XcmSender = XcmHandler;
+				type XcmSender = ();
 				type AssetTransactor = LocalAssetTransactor;
 				type OriginConverter = LocalOriginConverter;
-				type IsReserve = MultiNativeAsset;
+				type IsReserve = ();
 				type IsTeleporter = ();
 				type LocationInverter = LocationInverter<Ancestry>;
+				type Barrier = ();
+				type Weigher = FixedWeightBounds<UnitWeightCost, Call>;
+				type Trader = FixedRateOfConcreteFungible<WeightPrice>;
+				type ResponseHandler = ();
 			}
 		},
 		extra_config = {
@@ -307,7 +327,7 @@ decl_test_parachain! {
 
 			parameter_types! {
 				pub ParaANetwork: NetworkId = NetworkId::Any;
-				pub RelayChainOrigin: Origin = cumulus_pallet_xcm_handler::Origin::Relay.into();
+				pub RelayChainOrigin: Origin = cumulus_pallet_xcm::Origin::Relay.into();
 				pub Ancestry: MultiLocation = MultiLocation::X1(Junction::Parachain {
 					id: ParachainInfo::get().into(),
 				});
@@ -333,19 +353,29 @@ decl_test_parachain! {
 			pub type LocalOriginConverter = (
 				SovereignSignedViaLocation<LocationConverter, Origin>,
 				RelayChainAsNative<RelayChainOrigin, Origin>,
-				SiblingParachainAsNative<cumulus_pallet_xcm_handler::Origin, Origin>,
+				SiblingParachainAsNative<cumulus_pallet_xcm::Origin, Origin>,
 				SignedAccountId32AsNative<ParaANetwork, Origin>,
 			);
+
+			parameter_types! {
+				pub UnitWeightCost: Weight = 1_000;
+				pub const WeightPrice: (MultiLocation, u128) = (MultiLocation::X1(Junction::Parent), 1_000);
+				pub AllowUnpaidFrom: Vec<MultiLocation> = vec![ MultiLocation::X1(Junction::Parent) ];
+			}
 
 			pub struct XcmConfig;
 			impl XcmConfigT for XcmConfig {
 				type Call = Call;
-				type XcmSender = XcmHandler;
+				type XcmSender = ();
 				type AssetTransactor = LocalAssetTransactor;
 				type OriginConverter = LocalOriginConverter;
-				type IsReserve = MultiNativeAsset;
+				type IsReserve = ();
 				type IsTeleporter = ();
 				type LocationInverter = LocationInverter<Ancestry>;
+				type Barrier = ();
+				type Weigher = FixedWeightBounds<UnitWeightCost, Call>;
+				type Trader = FixedRateOfConcreteFungible<WeightPrice>;
+				type ResponseHandler = ();
 			}
 		},
 		extra_config = {

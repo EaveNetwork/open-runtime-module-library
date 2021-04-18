@@ -30,12 +30,7 @@ use sp_runtime::{
 };
 use sp_std::prelude::*;
 
-use xcm::v0::{
-	Junction::*,
-	MultiAsset, MultiLocation, Order,
-	Order::*,
-	Xcm::{self, *},
-};
+use xcm::v0::{opaque::Order, opaque::Xcm, Junction::*, MultiAsset, MultiLocation, Order::*, Xcm::WithdrawAsset};
 
 use orml_traits::location::{Parse, Reserve};
 use orml_xcm_support::XcmHandler;
