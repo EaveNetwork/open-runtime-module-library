@@ -22,7 +22,8 @@ sp-core = { git = "https://github.com/paritytech/substrate", branch = "rococo-v1
 pallet-treasury = { git = "https://github.com/paritytech/substrate", branch = "rococo-v1" }
 # Patch doesn't work as `pallet-elections-phragmen` is now 4.0.0 version. Revert `rev` to `rococo-v1` branch after
 # other `rococo-v1` dependencies upgraded.
-pallet-elections-phragmen = { git = "https://github.com/paritytech/substrate", rev = "ec180313e410915ed5e319358628260f9d1f3b53" }
+#pallet-elections-phragmen = { git = "https://github.com/paritytech/substrate", rev = "ec180313e410915ed5e319358628260f9d1f3b53" }
+pallet-elections-phragmen = { git = "https://github.com/paritytech/substrate", branch = "rococo-v1" }
 
 [features]
 default = ["std"]
