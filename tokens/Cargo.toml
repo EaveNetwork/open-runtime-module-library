@@ -22,7 +22,7 @@ sp-core = { git = "https://github.com/paritytech/substrate", branch = "polkadot-
 pallet-treasury = { git = "https://github.com/paritytech/substrate", branch = "polkadot-v0.9.2" }
 # Patch doesn't work as `pallet-elections-phragmen` is now 4.0.0 version. Revert `rev` to `statemint` branch after
 # other `statemint` dependencies upgraded.
-pallet-elections-phragmen = { git = "https://github.com/paritytech/substrate", rev = "3f110196163b5ec03bac5ee188d60bedf3ebd91d" }
+pallet-elections-phragmen = { git = "https://github.com/paritytech/substrate", rev = "1d7f6e12c651d776fc0dc1adefd007bb60f60b63" }
 
 [features]
 default = ["std"]
