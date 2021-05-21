@@ -205,9 +205,14 @@ pub mod module {
 			recipient: MultiLocation,
 		) -> Xcm {
 			let mut reanchored_dest = dest.clone();
+//TODO			if reserve == Parent.into() {
+//TODO				if let MultiLocation::X2(Parent, Parachain { id }) = dest {
+//TODO					reanchored_dest = Parachain { id }.into();
+//TODO				}
 			if reserve == Parent.into() {
-				if let MultiLocation::X2(Parent, Parachain { id }) = dest {
-					reanchored_dest = Parachain { id }.into();
+				if let MultiLocation::X2(Parent, Parachain(..)) = dest {
+//TODO Fix to use the correct parachain id
+					reanchored_dest = xcm::v0::prelude::X1(Parachain(1));
 				}
 			}
 
