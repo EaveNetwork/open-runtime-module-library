@@ -30,5 +30,5 @@ std = [
 	"num-traits/std",
 	"frame-support/std",
 	"orml-utilities/std",
-	"xcm/std",
+#	"xcm/std",
 ]
