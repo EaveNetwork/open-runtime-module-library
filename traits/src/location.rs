@@ -12,16 +12,15 @@ pub trait Parse {
 }
 
 fn is_chain_junction(junction: Option<&Junction>) -> bool {
-	matches!(junction, Some(Parent) | Some(Parachain(..)))
+	matches!(junction, Some(Parent) | Some(Parachain { id: _ }))
 }
 
 impl Parse for MultiLocation {
 	fn chain_part(&self) -> Option<MultiLocation> {
 		match (self.first(), self.at(1)) {
-//TODO			(Some(Parent), Some(Parachain(..))) => Some((Parent, Parachain(id.into()))),
-//TODO			(Some(Parent), Some(Parachain(..))) => Some((Parent, Parachain { id: *id }).into()),
+			(Some(Parent), Some(Parachain { id })) => Some((Parent, Parachain { id: *id }).into()),
 			(Some(Parent), _) => Some(Parent.into()),
-//TODO			(Some(Parachain(..)), _) => Some(Parachain { id: *id }.into()),
+			(Some(Parachain { id }), _) => Some(Parachain { id: *id }.into()),
 			_ => None,
 		}
 	}
@@ -59,7 +58,7 @@ impl Reserve for MultiAsset {
 mod tests {
 	use super::*;
 
-	const PARACHAIN: Junction = Parachain(1);
+	const PARACHAIN: Junction = Parachain { id: 1 };
 	const GENERAL_INDEX: Junction = GeneralIndex { id: 1 };
 
 	fn concrete_fungible(id: MultiLocation) -> MultiAsset {
