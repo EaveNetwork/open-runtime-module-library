@@ -89,6 +89,9 @@ pub mod module {
 
 		/// Weight information for extrinsics in this module.
 		type WeightInfo: WeightInfo;
+
+		/// Maximum size of HasDispatched
+		type MaxHasDispatchedSize: Get<u32>;
 	}
 
 	#[pallet::error]
@@ -127,7 +130,7 @@ pub mod module {
 	/// If an oracle operator has feed a value in this block
 	#[pallet::storage]
 	pub(crate) type HasDispatched<T: Config<I>, I: 'static = ()> =
-		StorageValue<_, OrderedSet<T::AccountId>, ValueQuery>;
+		StorageValue<_, OrderedSet<T::AccountId, T::MaxHasDispatchedSize>, ValueQuery>;
 
 	#[pallet::pallet]
 	pub struct Pallet<T, I = ()>(PhantomData<(T, I)>);
@@ -248,11 +251,11 @@ impl<T: Config<I>, I: 'static> ChangeMembers<T::AccountId> for Pallet<T, I> {
 	fn change_members_sorted(_incoming: &[T::AccountId], outgoing: &[T::AccountId], _new: &[T::AccountId]) {
 		// remove values
 		for removed in outgoing {
-			RawValues::<T, I>::remove_prefix(removed, None);
+			RawValues::<T, I>::remove_prefix(removed);
 		}
 
 		// not bothering to track which key needs recompute, just update all
-		IsUpdated::<T, I>::remove_all(None);
+		IsUpdated::<T, I>::remove_all();
 	}
 
 	fn set_prime(_prime: Option<T::AccountId>) {
